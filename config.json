@@ -1,0 +1,51 @@
+{
+	"feeds": [
+		{
+			"name":"double_verify_test",
+			"sources": [
+				{
+					"type":"hdfs",
+					"location":"/dv/domain_hourly_blocks/",
+					"filter":{
+						"days_ago":2
+					}
+				}
+			],
+			"destinations": [
+				{
+                                        "type":"stdout"
+                                }
+			],
+			"operators": [
+				{
+					"column_name_1":"Imps_blocked",
+					"column_name_2":"Imps",
+					"column_name_new":"Fraud",
+					"operation":"/"
+				}
+			],
+			"selectors": [
+				{
+					"column_name":"dv_block_reason",
+					"comparator":"==",
+					"value":1
+				},
+				{
+					"column_name":"Imps",
+					"comparator":">",
+					"value":5000
+				},
+				{
+					"column_name":"Fraud",
+					"comparator":">",
+					"value":0.4
+				},
+				{
+					"column_name":"Convs",
+					"comparator":"==",
+					"value":0
+				}
+			]
+		}
+	]
+}

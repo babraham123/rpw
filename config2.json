@@ -1,0 +1,51 @@
+{
+	"feeds": [
+		{
+			"name":"double_verify",
+			"sources": [
+				{
+					"type":"hdfs",
+					"location":"/dv/domain_hourly_blocks/",
+					"filter":{
+						"days_ago":2
+					}
+				}
+			],
+			"destinations": [
+				{
+                                        "type":"API",
+                                        "environment":"dw-ctest",
+                                        "service":"domain-list",
+                                        "filter":{
+                                                "id":[3911],
+                                                "member_id":4091
+                                        },
+                                        "column_name":"site_domain",
+                                        "field_name":"domains",
+                                        "field_type":"list",
+                                        "action":"append"
+                                }
+			],
+			"operators": [
+				{
+					"column_name_1":"Imps_blocked",
+					"column_name_2":"Imps",
+					"column_name_new":"Fraud",
+					"operation":"/"
+				}
+			],
+			"selectors": [
+				{
+					"column_name":"Imps"
+					"comparator":">",
+					"value":5000
+				},
+				{
+					"column_name":"Convs",
+					"comparator":"==",
+					"value":0
+				}
+			]
+		}
+	]
+}
